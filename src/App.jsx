@@ -11,7 +11,6 @@ function App() {
   const [count, setCount] = useState(0)
   const [selectedNode, setSelectedNode] = useState({ level: null, label: null });
 
-  console.log(categoryTree);
   return (
     <div className='app'>
       <div className='header'>

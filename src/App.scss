@@ -18,10 +18,11 @@
 
 .explore-page
 {
+  height:calc(100vh - 90px);
   display: flex;
   flex-direction: row;
   /* align-items: center; */
-  padding: 1rem;
+  // padding: 1rem;
   gap: 20px;
 }
 
@@ -30,6 +31,7 @@
   height:calc(100vh - 90px);
   overflow: scroll;
   padding: 1rem;
+  box-sizing: border-box;
 }
 
 .comparative-plot-container
@@ -37,4 +39,5 @@
   height:calc(100vh - 90px);
   overflow: scroll;
   flex-grow: 1;
+  box-sizing: border-box;
 }
