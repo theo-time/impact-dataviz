@@ -100,7 +100,7 @@ export default function ComparativePlot({ data, selectedNode }) {
             />
             <YAxis
               type="category"
-              dataKey="Nom_procede"
+              dataKey="Nom du flux"
               width={300}
               interval={0}
               tickFormatter={formatLabel}

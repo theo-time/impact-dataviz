@@ -4,6 +4,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    height: 70px;
     padding: 10px;
     // background-color: #363f30;
     // color: white;
@@ -26,14 +27,14 @@
 
 .tree-selector-container
 {
-  height:100vh;
+  height:calc(100vh - 90px);
   overflow: scroll;
   padding: 1rem;
 }
 
 .comparative-plot-container
 {
-  height:100vh;
+  height:calc(100vh - 90px);
   overflow: scroll;
   flex-grow: 1;
 }
