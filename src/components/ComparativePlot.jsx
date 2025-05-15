@@ -29,14 +29,23 @@ export default function ComparativePlot({ data, selectedNode }) {
 
   // Filtrage des données selon le niveau sélectionné (selectedNode)
   const filtered = useMemo(() => {
-    if (!selectedNode?.level || !selectedNode?.label) return [];
+    if (!selectedNode?.path || !category) return [];
+    const { path, level, label } = selectedNode;
 
-    const levelKey = `Categorie_niv_${selectedNode.level}`;
-    return data.filter(
-      d =>
-        d[levelKey]?.trim() === selectedNode.label.trim() &&
-        d.category_name?.trim() === category
-    );
+    console.log(level, label);
+    console.log(path);
+    // console.log(data[1])
+
+    return data.filter(row => {
+
+      return (
+        (path.categorie_niv_1 === row.Categorie_niv_1) &&
+        (level < 1 || path.categorie_niv_2 === row.Categorie_niv_2) &&
+        (level < 2 || path.categorie_niv_3 === row.Categorie_niv_3) &&
+        (level < 3 || path.categorie_niv_4 === row.Categorie_niv_4) &&
+        row.category_name?.trim() === category
+      )
+    });
   }, [data, selectedNode, category]);
 
   // Tri décroissant
@@ -49,7 +58,7 @@ export default function ComparativePlot({ data, selectedNode }) {
     let currentLine = words[0] || '';
     for (let i = 1; i < words.length; i++) {
       const testLine = currentLine + ' ' + words[i];
-      if (testLine.length <= 50) {
+      if (testLine.length <= 100) {
         currentLine = testLine;
       } else {
         lines.push(currentLine);
