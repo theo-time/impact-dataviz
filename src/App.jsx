@@ -5,7 +5,7 @@ import impactsLongMerged from './data/impacts_long_merged.json';
 
 import TreeSelector from './components/TreeSelector.jsx';
 import ComparativePlot from './components/ComparativePlot.jsx';
-import './App.css'
+import './App.scss'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,9 +13,13 @@ function App() {
 
   console.log(categoryTree);
   return (
-    <>
-
-      <div className='title'>ImpactVIZ</div>
+    <div className='app'>
+      <div className='header'>
+        <div className='title-container'>
+          <div className='title'>ImpactVIZ</div>
+          <div className='subtitle'>Visualisation des impacts environnementaux</div>
+        </div>
+      </div>
 
       <div className='explore-page'>
         <div className='tree-selector-container'>
@@ -32,7 +36,7 @@ function App() {
         </div>
         {/* </div> */}
       </div>
-    </>
+    </div>
   )
 }
 

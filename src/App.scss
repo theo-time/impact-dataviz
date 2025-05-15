@@ -1,0 +1,39 @@
+.header
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    // background-color: #363f30;
+    // color: white;
+  // .title-container
+  // {
+  //   /* display: flex;
+  //   flex-direction: column; */
+  //   /* gap: 10px; */
+  // }
+}
+
+.explore-page
+{
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  padding: 1rem;
+  gap: 20px;
+}
+
+.tree-selector-container
+{
+  height:100vh;
+  overflow: scroll;
+  padding: 1rem;
+}
+
+.comparative-plot-container
+{
+  height:100vh;
+  overflow: scroll;
+  flex-grow: 1;
+}
