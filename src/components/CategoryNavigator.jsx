@@ -1,5 +1,7 @@
 import React from 'react'
 import { Box, Typography } from '@mui/material'
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 
 export default function CategoryNavigator({ selectedNode, setSelectedNode }) {
 
@@ -11,12 +13,26 @@ export default function CategoryNavigator({ selectedNode, setSelectedNode }) {
 
   return (
     selectedNode?.path && (
-      <Box sx={{ mb: 2 }}>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 1 }}>
-          {selectedNode.path.map((segment, index) => (
-            <Box
+      <Breadcrumbs separator="›" aria-label="fil d’ariane" sx={{ mb: 2 }}>
+        {selectedNode.path.map((segment, index) => {
+          const isLast = index === selectedNode.path.length - 1;
+          return isLast ? (
+            <Typography
+              key={index}
+              color="text.primary"
+              fontFamily={'Source Sans Pro'}
+              fontWeight={500}
+            >
+              {segment}
+            </Typography>
+          ) : (
+            <Link
               key={index}
               component="button"
+              underline="hover"
+              color="text.secondary"
+              fontWeight={500}
+              fontFamily={'Source Sans Pro'}
               onClick={() => {
                 const newPath = selectedNode.path.slice(0, index + 1);
                 const newLevel = newPath.length - 1;
@@ -27,27 +43,12 @@ export default function CategoryNavigator({ selectedNode, setSelectedNode }) {
                   label: newLabel,
                 });
               }}
-              sx={{
-                background: 'none',
-                border: 'none',
-                // color: '#007acc',
-                cursor: 'pointer',
-                padding: 0,
-                // textDecoration: 'underline',
-                fontSize: '0.875rem',
-              }}
             >
               {segment}
-            </Box>
-          )).reduce((acc, curr, i, arr) => {
-            acc.push(curr);
-            if (i < arr.length - 1) {
-              acc.push(<span key={`sep-${i}`}>/</span>);
-            }
-            return acc;
-          }, [])}
-        </Box>
-      </Box>
+            </Link>
+          );
+        })}
+      </Breadcrumbs>
     )
   )
 }
