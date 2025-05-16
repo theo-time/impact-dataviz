@@ -15,6 +15,17 @@ const renderTree = (node, path = '', setSelectedNode) => {
       'categorie_niv_4': itemId.split('/')[3],
     }
 
+    // Do not display the leaves
+    if (children === null || typeof children !== 'object') {
+      return null;
+    }
+
+    // Do not display categories with empty trimmed label
+    if (label.trim() === '') {
+      return null;
+    }
+
+
     const handleClick = (e) => {
       e.stopPropagation();
       // console.log(`Clicked: ${label} | level ${level} | itemId: ${itemId}`);

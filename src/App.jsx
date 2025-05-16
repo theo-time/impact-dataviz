@@ -22,15 +22,12 @@ function App() {
 
       <div className='explore-page'>
         <div className='tree-selector-container'>
-
-          <div>Level: {selectedNode.level}</div>
-          <div>Label: {selectedNode.label}</div>
+          {/* <div>Level: {selectedNode.level}</div>
+          <div>Label: {selectedNode.label}</div> */}
           <TreeSelector selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
         </div>
         {/* <div className='comparative-plot-block'> */}
         <div className='comparative-plot-container'>
-          {/* <h2>Comparatif des impacts environnementaux</h2>
-          <div>Comparative plot will be here</div> */}
           <ComparativePlot data={impactsLongMerged} selectedNode={selectedNode} />
         </div>
         {/* </div> */}
