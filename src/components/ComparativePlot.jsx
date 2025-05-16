@@ -95,31 +95,33 @@ export default function ComparativePlot({ data, selectedNode }) {
       {sortedData.length === 0 ? (
         <Typography variant="body2">Aucune donnée disponible.</Typography>
       ) : (
-        <ResponsiveContainer width="100%" height={sortedData.length * 40}>
-          <BarChart
-            layout="vertical"
-            data={sortedData}
-            margin={{ top: 10, right: 40, left: 150, bottom: 10 }}
-            barCategoryGap="15%"
-          >
-            <XAxis
-              type="number"
-              orientation="top"
-              tick={{ fontSize: 12 }}
-            />
-            <YAxis
-              type="category"
-              dataKey="Nom du flux"
-              width={300}
-              interval={0}
-              tickFormatter={formatLabel}
-            />
-            <Tooltip />
-            <Bar dataKey="valeur" fill="#007acc">
-              <LabelList dataKey="valeur" position="right" />
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        <Box sx={{ width: '100%', height: sortedData.length * 45 + 40 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              layout="vertical"
+              data={sortedData}
+              margin={{ top: 10, right: 40, left: 150, bottom: 10 }}
+              barCategoryGap="15%"
+            >
+              <XAxis
+                type="number"
+                orientation="top"
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis
+                type="category"
+                dataKey="Nom du flux"
+                width={300}
+                interval={0}
+                tickFormatter={formatLabel}
+              />
+              <Tooltip />
+              <Bar dataKey="valeur" fill="#007acc">
+                <LabelList dataKey="valeur" position="right" />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </Box>
       )}
     </Box>
   );
