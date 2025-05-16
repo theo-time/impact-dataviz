@@ -28,7 +28,7 @@ function App() {
         </div>
         {/* <div className='comparative-plot-block'> */}
         <div className='comparative-plot-container'>
-          <ComparativePlot data={impactsLongMerged} selectedNode={selectedNode} />
+          <ComparativePlot data={impactsLongMerged} selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
         </div>
         {/* </div> */}
       </div>

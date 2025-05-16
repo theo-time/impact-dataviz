@@ -14,8 +14,9 @@ import {
   LabelList,
   ResponsiveContainer
 } from 'recharts';
+import CategoryNavigator from './CategoryNavigator.jsx';
 
-export default function ComparativePlot({ data, selectedNode }) {
+export default function ComparativePlot({ data, selectedNode, setSelectedNode }) {
   const [category, setCategory] = useState('Acidification'); // default category
 
   // Liste unique des catégories d'impact (category_name)
@@ -39,10 +40,10 @@ export default function ComparativePlot({ data, selectedNode }) {
     return data.filter(row => {
 
       return (
-        (path.categorie_niv_1 === row.Categorie_niv_1) &&
-        (level < 1 || path.categorie_niv_2 === row.Categorie_niv_2) &&
-        (level < 2 || path.categorie_niv_3 === row.Categorie_niv_3) &&
-        (level < 3 || path.categorie_niv_4 === row.Categorie_niv_4) &&
+        (path[0] === row.Categorie_niv_1) &&
+        (level < 1 || path[1] === row.Categorie_niv_2) &&
+        (level < 2 || path[2] === row.Categorie_niv_3) &&
+        (level < 3 || path[3] === row.Categorie_niv_4) &&
         row.category_name?.trim() === category
       )
     });
@@ -73,6 +74,7 @@ export default function ComparativePlot({ data, selectedNode }) {
 
   return (
     <Box sx={{ mt: 4 }}>
+      <CategoryNavigator selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
       <Typography variant="h6" gutterBottom>
         Comparatif des impacts environnementaux
       </Typography>

@@ -8,12 +8,7 @@ const renderTree = (node, path = '', setSelectedNode) => {
   return Object.entries(node).map(([label, children]) => {
     const itemId = path === '' ? label : `${path}/${label}`;
     const level = path === '' ? 0 : path.split('/').length;
-    const pathObj = {
-      'categorie_niv_1': itemId.split('/')[0],
-      'categorie_niv_2': itemId.split('/')[1],
-      'categorie_niv_3': itemId.split('/')[2],
-      'categorie_niv_4': itemId.split('/')[3],
-    }
+    const pathArray = path === '' ? [label] : path.split('/').concat(label);
 
     // Do not display the leaves
     if (children === null || typeof children !== 'object') {
@@ -30,8 +25,8 @@ const renderTree = (node, path = '', setSelectedNode) => {
       e.stopPropagation();
       // console.log(`Clicked: ${label} | level ${level} | itemId: ${itemId}`);
       // console.log(`Path: ${JSON.stringify(pathObj)}`);
-      console.log(`Clicked: ${label} | level ${level} | itemId: ${itemId}`);
-      setSelectedNode({ level, label, path: pathObj });
+      // console.log(`Clicked: ${label} | level ${level} | itemId: ${itemId}`);
+      setSelectedNode({ level, label, path: pathArray });
     };
 
     if (children === null || typeof children !== 'object') {
