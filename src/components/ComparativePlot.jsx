@@ -16,6 +16,40 @@ import {
 } from 'recharts';
 import CategoryNavigator from './CategoryNavigator.jsx';
 
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length > 0) {
+    const data = payload[0].payload;
+
+    const nom = data["Nom du flux"]?.trim() ?? '';
+    const valeur = data.valeur?.toLocaleString('fr-FR', { maximumSignificantDigits: 3 }) ?? '';
+    const uniteRef = data["Unité de référence"]?.trim() ?? '';
+    const qte = data["Quantité de référence"]?.trim() ?? '';
+    const unite = data["Unité"]?.trim() ?? '';
+
+    return (
+      <Box
+        sx={{
+          backgroundColor: 'white',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          padding: '0.75rem',
+          fontSize: '0.875rem',
+          maxWidth: 280,
+          wordWrap: 'break-word',
+        }}
+      >
+        {nom}
+        <strong style={{ display: 'block', marginBottom: '0.25rem', marginTop: '0.25rem', fontSize: '1rem' }}>{`${valeur} ${uniteRef} par ${qte} ${unite}`}</strong>
+
+      </Box>
+    );
+  }
+
+  return null;
+};
+
+
+
 export default function ComparativePlot({ data, selectedNode, setSelectedNode }) {
   const [category, setCategory] = useState('Acidification'); // default category
 
@@ -119,7 +153,7 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
                 interval={0}
                 tickFormatter={formatLabel}
               />
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="valeur" fill="#007acc">
                 <LabelList dataKey="valeur" position="right" />
               </Bar>

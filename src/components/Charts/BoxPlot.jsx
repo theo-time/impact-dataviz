@@ -68,7 +68,7 @@ export default function BoxPlot({ data }) {
         responsive: true,
         displayModeBar: false
       }}
-      style={{ width: '100%', height: '400px' }}
+      style={{ width: '100%', height: '370px' }}
     />
   );
 }
