@@ -9,17 +9,17 @@ import SunburstDemo from '../../../components/Charts/SunburstDemo.jsx';
 import ImpactCategoryDropDown from '../../../components/ImpactCategoryDropDown.jsx';
 
 export default function SunburstPage() {
-  const [selectedImpactCategory, setSelectedImpactCategory] = React.useState(' Acidification ');
+  const [selectedImpactCategory, setSelectedImpactCategory] = React.useState('Acidification');
 
-  console.log('impactsLongMerged', impactsLongMerged);
-  console.log('selectedImpactCategory', selectedImpactCategory);
-
-  const impactsFiltered = impactsLongMerged.filter((item, index) => item.valeur > 0 && item.category_name == selectedImpactCategory);
+  const impactsFiltered = impactsLongMerged.filter((item, index) => item.valeur > 0 && item.category_name == selectedImpactCategory
+    // && item.categorie_niv_1 != 'Composant electrique et electronique'
+  )
 
   return (
     <DashboardPage
-      title="Importance relative des catégories d’impacts"
-      subtitle="todo"
+      title="Importance relative des catégories de procédés"
+      subtitle="Chaque cercle concentrique représente un niveau de classification. La largeur de chaque segment est proportionnelle à sa part dans la moyenne d'impact de la catégorie supérieure.
+      Cela permet de visualiser la contribution relative de chaque catégorie d'impact à l'impact moyen ."
     >
       <ImpactCategoryDropDown
         data={impactsLongMerged}
