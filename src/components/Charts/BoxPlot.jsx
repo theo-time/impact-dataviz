@@ -9,6 +9,23 @@ export default function BoxPlot({ data }) {
     .map(d => Number(d.valeur))
     .filter(v => !isNaN(v) && isFinite(v) && v > 0); // supprime les valeurs nulles ou absurdes
 
+  function wrapLabel(text, maxLineLength = 40) {
+    const words = text.split(' ');
+    let lines = [];
+    let currentLine = '';
+
+    for (const word of words) {
+      if ((currentLine + ' ' + word).trim().length <= maxLineLength) {
+        currentLine += (currentLine ? ' ' : '') + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    if (currentLine) lines.push(currentLine);
+    return lines.join('<br>');
+  }
+
   const labels = data.map(d => d['Nom du flux']?.trim() || '');
   const unit = data[0]['Unité de référence']?.trim() || 'Valeur';
   console.log(unit)
@@ -25,7 +42,7 @@ export default function BoxPlot({ data }) {
           marker: { color: '#007acc', size: 5 },
           line: { color: '#007acc' },
           fillcolor: 'rgba(0,122,204,0.1)',
-          hovertext: labels,
+          hovertext: labels.map(label => wrapLabel(label)),
           hoverinfo: 'y+text',
           name: 'Distribution'
         }

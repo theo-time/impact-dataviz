@@ -1,22 +1,7 @@
-.header
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: 70px;
-    padding: 10px;
-    // background-color: #363f30;
-    // color: white;
-  .title-container
-  {
-    margin-left: 10px;
-  }
-}
 
 .explore-page
 {
-  height:calc(100vh - 90px);
+  height:calc(100vh - 91px);
   display: flex;
   flex-direction: row;
   /* align-items: center; */
@@ -26,7 +11,7 @@
 
 .tree-selector-container
 {
-  height:calc(100vh - 90px);
+  height:calc(100vh - 91px);
   overflow: scroll;
   padding: 1rem;
   box-sizing: border-box;
@@ -34,7 +19,7 @@
 
 .comparative-plot-container
 {
-  height:calc(100vh - 90px);
+  height:calc(100vh - 91px);
   overflow: scroll;
   flex-grow: 1;
   box-sizing: border-box;
