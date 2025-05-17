@@ -5,6 +5,7 @@ export default function CorrelationHeatmap({ data }) {
   const xLabels = [...new Set(data.map(d => d.x))];
   const yLabels = [...new Set(data.map(d => d.y))];
 
+  const n = xLabels.length;
   const zMatrix = yLabels.map(y =>
     xLabels.map(x => {
       const found = data.find(d => d.x === x && d.y === y);
@@ -12,9 +13,10 @@ export default function CorrelationHeatmap({ data }) {
     })
   );
 
+
   const getTextColor = (value, x, y) => {
-    if (x === y) return '#cccccc'; // gris clair pour x === y
-    return Math.abs(value) > 0.5 ? '#bbbbbb' : '#000000';
+    if (x === y) return '#333'; // sombre sur fond gris
+    return Math.abs(value) > 0.5 ? '#eeeeee' : '#000000';
   };
 
   const textMatrix = yLabels.map((y, i) =>
@@ -25,11 +27,12 @@ export default function CorrelationHeatmap({ data }) {
   );
 
   const textColorMatrix = yLabels.map((y, i) =>
-    xLabels.map((x, j) => {
-      const val = zMatrix[i][j];
-      return getTextColor(val, x, y);
-    })
+    xLabels.map((x, j) => getTextColor(zMatrix[i][j], x, y))
   );
+
+  // Compute height based on the viewport size
+  const viewportHeight = window.innerHeight;
+  const plotDimension = Math.min(viewportHeight * 0.8, 1000);
 
   return (
     <Plot
@@ -48,9 +51,10 @@ export default function CorrelationHeatmap({ data }) {
           text: textMatrix,
           texttemplate: '%{text}',
           textfont: {
-            size: 12,
+            size: 10,
             color: textColorMatrix,
           },
+          nullcolor: '#121200',  // <--- couleur pour les valeurs nulles
           colorbar: {
             tickfont: { size: 14 },
             title: {
@@ -62,18 +66,25 @@ export default function CorrelationHeatmap({ data }) {
       ]}
       layout={{
         title: 'Corrélations entre catégories d’impact',
-        height: 1000,
-        width: 1000,
-        margin: { t: 60, l: 120, r: 60, b: 120 },
+        autosize: true,
+        height: plotDimension,
+        width: plotDimension + 300,
+        margin: { t: 0, l: 80, r: 40, b: 140 },
         xaxis: {
+          tickFont: { size: 20 },
           tickangle: -45,
           automargin: true,
         },
         yaxis: {
+          tickFont: { size: 20 },
           automargin: true,
         },
       }}
-      config={{ responsive: true }}
+      config={{
+        responsive: true,
+        displayModeBar: false,
+      }}
+      style={{ width: '100%' }}
     />
   );
 }
