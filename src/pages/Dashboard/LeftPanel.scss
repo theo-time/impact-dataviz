@@ -1,0 +1,40 @@
+.left-panel {
+  width: 220px;
+  padding: 1.5rem 1rem;
+  background: #f7f7f7;
+  border-right: 1px solid #eee;
+  height: calc(vh - 90px);
+  box-sizing: border-box;
+
+  .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 0.8rem;
+
+      a {
+        text-decoration: none;
+        color: #444;
+        font-size: 0.95rem;
+        transition: 0.2s;
+
+        &.active {
+          font-weight: 600;
+          color: #007acc;
+        }
+
+        &:hover {
+          color: #007acc;
+        }
+      }
+    }
+  }
+}

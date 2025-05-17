@@ -71,6 +71,8 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     return lines.join('\n');
   };
 
+  console.log('sortedData', sortedData);
+
 
   return (
     <Box sx={{ mt: 4 }}>
