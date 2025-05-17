@@ -8,6 +8,7 @@ import MetadataProcedes from './pages/MetadataProcedes.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import DistributionPage from './pages/Dashboard/Pages/DistributionPage.jsx';
 import SunburstPage from './pages/Dashboard/Pages/SunburstPage.jsx';
+import CorrelationPage from './pages/Dashboard/Pages/CorrelationPage.jsx';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route index element={<Navigate to="distribution" />} />
           <Route path="distribution" element={<DistributionPage />} />
           <Route path="sunburst" element={<SunburstPage />} />
+          <Route path="correlation" element={<CorrelationPage />} />
         </Route>
       </Routes>
     </div>

@@ -5,7 +5,8 @@ import './LeftPanel.scss';
 export default function DashboardNavigation() {
   const links = [
     { label: 'Distribution', path: '/dashboard/distribution' },
-    { label: 'Sunburst', path: '/dashboard/sunburst' }
+    { label: 'Sunburst', path: '/dashboard/sunburst' },
+    { label: 'Correlation', path: '/dashboard/correlation' },
   ];
 
   return (
