@@ -7,10 +7,18 @@
   /* align-items: center; */
   // padding: 1rem;
   gap: 20px;
+
+  .tree-selector-container
+  {
+    min-width: 500px;
+    max-width: 500px; 
+  }
 }
 
 .tree-selector-container
 {
+  min-width: 40%;
+  max-width: 40%;
   height:calc(100vh - 91px);
   overflow: scroll;
   padding: 1rem;

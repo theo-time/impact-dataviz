@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { use, useEffect } from 'react'
 import ImpactCategorySelector from '../components/ImpactCategorySelector.jsx';
 import impactsCategoriesData from '../data/categorie_impacts.json';
 import ImpactCategoryDetails from '../components/ImpactCategoryDetails.jsx';
 
 export default function Metadata() {
   const [selectedImpactCategory, setSelectedImpactCategory] = React.useState(null);
-  console.log('selectedImpactCategory', selectedImpactCategory);
+
+  // Par défaut, on sélectionne la première catégorie d'impact
+  useEffect(() => {
+    if (impactsCategoriesData.length > 0) {
+      setSelectedImpactCategory(impactsCategoriesData[0]['Nom français']);
+    }
+  }, [impactsCategoriesData]);
+
   return (
     <div className='explore-page'>
       <div className='tree-selector-container'>

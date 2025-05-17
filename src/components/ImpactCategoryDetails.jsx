@@ -19,7 +19,6 @@ const LABELS = {
 
 export default function ImpactCategoryDetails({ data }) {
   if (!data) return null;
-  console.log('data', data);
 
   return (
     <div className="impact-details">

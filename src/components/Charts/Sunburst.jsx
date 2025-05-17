@@ -86,10 +86,6 @@ export default function SunburstChart({ data }) {
     hovertext.push(wrapLabel(node.label));
   }
 
-  console.log("labels", labels);
-  console.log("parents", parents);
-  console.log("values", values);
-
   return (
     <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
       <Plot

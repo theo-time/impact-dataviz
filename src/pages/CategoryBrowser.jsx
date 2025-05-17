@@ -7,7 +7,6 @@ import ComparativePlot from '../components/ComparativePlot.jsx';
 export default function CategoryBrowser() {
   const [count, setCount] = useState(0)
   const [selectedNode, setSelectedNode] = useState({ level: null, label: null });
-  console.log(impactsLongMerged.filter((item, index) => index < 10));
 
   return (
     <>

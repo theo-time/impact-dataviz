@@ -67,10 +67,6 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     if (!selectedNode?.path || !category) return [];
     const { path, level, label } = selectedNode;
 
-    console.log(level, label);
-    console.log(path);
-    // console.log(data[1])
-
     return data.filter(row => {
 
       return (
@@ -104,9 +100,6 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     lines.push(currentLine);
     return lines.join('\n');
   };
-
-  console.log('sortedData', sortedData);
-
 
   return (
     <Box sx={{ mt: 4 }}>
