@@ -1,37 +1,23 @@
 import { useState } from 'react'
-
-import categoryTree from './data/arbre_categories.json';
-import impactsLongMerged from './data/impacts_long_merged.json';
-
-import TreeSelector from './components/TreeSelector.jsx';
-import ComparativePlot from './components/ComparativePlot.jsx';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home.jsx';
+import CategoryBrowser from './pages/CategoryBrowser.jsx';
 import './App.scss'
+import Header from './components/Header.jsx';
+import Metadata from './pages/Metadata.jsx';
+import MetadataProcedes from './pages/MetadataProcedes.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [selectedNode, setSelectedNode] = useState({ level: null, label: null });
 
   return (
     <div className='app'>
-      <div className='header'>
-        <div className='title-container'>
-          <div className='title'>ImpactVIZ</div>
-          <div className='subtitle'>Visualisation des impacts environnementaux</div>
-        </div>
-      </div>
-
-      <div className='explore-page'>
-        <div className='tree-selector-container'>
-          {/* <div>Level: {selectedNode.level}</div>
-          <div>Label: {selectedNode.label}</div> */}
-          <TreeSelector selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
-        </div>
-        {/* <div className='comparative-plot-block'> */}
-        <div className='comparative-plot-container'>
-          <ComparativePlot data={impactsLongMerged} selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
-        </div>
-        {/* </div> */}
-      </div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<CategoryBrowser />} />
+        <Route path="/category-browser" element={<CategoryBrowser />} />
+        <Route path='/metadata' element={<Metadata />} />
+        <Route path='/metadata-procede' element={<MetadataProcedes />} />
+      </Routes>
     </div>
   )
 }

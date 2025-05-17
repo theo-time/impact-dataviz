@@ -22,6 +22,9 @@ export default function CategoryNavigator({ selectedNode, setSelectedNode }) {
               color="text.primary"
               fontFamily={'Source Sans Pro'}
               fontWeight={500}
+              sx={{
+                marginBottom: '0.1rem',
+              }}
             >
               {segment}
             </Typography>
@@ -33,6 +36,15 @@ export default function CategoryNavigator({ selectedNode, setSelectedNode }) {
               color="text.secondary"
               fontWeight={500}
               fontFamily={'Source Sans Pro'}
+              sx={{
+                cursor: 'pointer',
+                display: 'inline',
+                padding: 0,
+                margin: 0,
+                verticalAlign: 'middle',
+                marginBottom: '0.1rem',
+                // lineHeight: 1.5,
+              }}
               onClick={() => {
                 const newPath = selectedNode.path.slice(0, index + 1);
                 const newLevel = newPath.length - 1;

@@ -1,0 +1,44 @@
+.impact-details {
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+
+  //   background-color: #fafafa;
+  // border: 1px solid #eee;
+
+  h1 {
+    // font-size: 1.25rem;
+    // font-weight: 600;
+    margin-top: 0px;
+    padding-top: 0px;
+  }
+
+  .details-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid #eee;
+      padding: 0.4rem 0;
+
+      .detail-label {
+        font-weight: 500;
+        color: #555;
+        flex: 1;
+        white-space: nowrap;
+      }
+
+      .detail-value {
+        flex: 2;
+        color: #222;
+        text-align: left;
+        white-space: pre-wrap;
+      }
+    }
+  }
+}
