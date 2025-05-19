@@ -8,6 +8,7 @@ import {
   Button
 } from '@mui/material';
 import Plot from 'react-plotly.js';
+import impactColors from '../../configs/colorCode.js';
 
 export default function BarChart({ data, xScale }) {
 
@@ -15,7 +16,8 @@ export default function BarChart({ data, xScale }) {
     return [...data].sort((a, b) => a.valeur - b.valeur); // tri croissant
   }, [data]);
 
-  console.log('sortedData', sortedData);
+  const category = sortedData[0]?.category_name?.trim() ?? '';
+
 
   const labels = sortedData.map(d => d["Nom du flux"]);
   const values = sortedData.map(d => d.valeur);
@@ -53,7 +55,10 @@ export default function BarChart({ data, xScale }) {
           hoverinfo: 'text',
           hovertemplate: '%{text}<extra></extra>',
           orientation: 'h',
-          marker: { color: '#007acc' },
+          marker: {
+            color: impactColors[category] ?? '#999',
+            line: { width: 0.5, color: '#333' }
+          },
           textposition: 'none'
         }
       ]}

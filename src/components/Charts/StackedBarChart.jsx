@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Typography } from '@mui/material';
 import Plot from 'react-plotly.js';
+import impactColors from '../../configs/colorCode.js';
 
 export default function StackedBarChart({ data, xScale }) {
   const groupedData = useMemo(() => {
@@ -50,7 +51,10 @@ export default function StackedBarChart({ data, xScale }) {
         y: sortedFlux.map(name => wrapLabel(name)),
         orientation: 'h',
         hoverinfo: 'x+y+name',
-        marker: { line: { width: 0.5, color: '#333' } }
+        marker: {
+          color: impactColors[category] ?? '#999',
+          line: { width: 0.5, color: '#333' }
+        }
       };
     });
 
