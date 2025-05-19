@@ -5,55 +5,12 @@ import {
   TextField,
   MenuItem
 } from '@mui/material';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  LabelList,
-  ResponsiveContainer
-} from 'recharts';
+import Plot from 'react-plotly.js';
 import CategoryNavigator from './CategoryNavigator.jsx';
 
-const CustomTooltip = ({ active, payload }) => {
-  if (active && payload && payload.length > 0) {
-    const data = payload[0].payload;
-
-    const nom = data["Nom du flux"]?.trim() ?? '';
-    const valeur = data.valeur?.toLocaleString('fr-FR', { maximumSignificantDigits: 3 }) ?? '';
-    const uniteRef = data["Unité de référence"]?.trim() ?? '';
-    const qte = data["Quantité de référence"]?.trim() ?? '';
-    const unite = data["Unité"]?.trim() ?? '';
-
-    return (
-      <Box
-        sx={{
-          backgroundColor: 'white',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          padding: '0.75rem',
-          fontSize: '0.875rem',
-          maxWidth: 280,
-          wordWrap: 'break-word',
-        }}
-      >
-        {nom}
-        <strong style={{ display: 'block', marginBottom: '0.25rem', marginTop: '0.25rem', fontSize: '1rem' }}>{`${valeur} ${uniteRef} par ${qte} ${unite}`}</strong>
-
-      </Box>
-    );
-  }
-
-  return null;
-};
-
-
-
 export default function ComparativePlot({ data, selectedNode, setSelectedNode }) {
-  const [category, setCategory] = useState('Acidification'); // default category
+  const [category, setCategory] = useState('Acidification');
 
-  // Liste unique des catégories d'impact (category_name)
   const categoryOptions = useMemo(() => {
     const set = new Set();
     data.forEach(d => {
@@ -62,44 +19,33 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     return Array.from(set);
   }, [data]);
 
-  // Filtrage des données selon le niveau sélectionné (selectedNode)
   const filtered = useMemo(() => {
     if (!selectedNode?.path || !category) return [];
-    const { path, level, label } = selectedNode;
+    const { path, level } = selectedNode;
 
-    return data.filter(row => {
-
-      return (
-        (path[0] === row.Categorie_niv_1) &&
-        (level < 1 || path[1] === row.Categorie_niv_2) &&
-        (level < 2 || path[2] === row.Categorie_niv_3) &&
-        (level < 3 || path[3] === row.Categorie_niv_4) &&
-        row.category_name?.trim() === category
-      )
-    });
+    return data.filter(row =>
+      path[0] === row.Categorie_niv_1 &&
+      (level < 1 || path[1] === row.Categorie_niv_2) &&
+      (level < 2 || path[2] === row.Categorie_niv_3) &&
+      (level < 3 || path[3] === row.Categorie_niv_4) &&
+      row.category_name?.trim() === category
+    );
   }, [data, selectedNode, category]);
 
-  // Tri décroissant
-  const sortedData = [...filtered].sort((a, b) => b.valeur - a.valeur);
+  const sortedData = useMemo(() => {
+    return [...filtered].sort((a, b) => a.valeur - b.valeur); // tri croissant
+  }, [filtered]);
 
-  const formatLabel = (label) => {
-    const words = label.split(/[\s/|-]/g);
-    const lines = [];
-
-    let currentLine = words[0] || '';
-    for (let i = 1; i < words.length; i++) {
-      const testLine = currentLine + ' ' + words[i];
-      if (testLine.length <= 100) {
-        currentLine = testLine;
-      } else {
-        lines.push(currentLine);
-        currentLine = words[i];
-        if (lines.length === 1) break; // max 2 lines
-      }
-    }
-    lines.push(currentLine);
-    return lines.join('\n');
-  };
+  const labels = sortedData.map(d => d["Nom du flux"]);
+  const values = sortedData.map(d => d.valeur);
+  const tooltips = sortedData.map(d => {
+    const nom = d["Nom du flux"]?.trim() ?? '';
+    const valeur = d.valeur?.toLocaleString('fr-FR', { maximumSignificantDigits: 3 }) ?? '';
+    const uniteRef = d["Unité de référence"]?.trim() ?? '';
+    const qte = d["Quantité de référence"]?.trim() ?? '';
+    const unite = d["Unité"]?.trim() ?? '';
+    return `${nom}<br><b>${valeur} ${uniteRef} par ${qte} ${unite}</b>`;
+  });
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -126,33 +72,38 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
       {sortedData.length === 0 ? (
         <Typography variant="body2">Aucune donnée disponible.</Typography>
       ) : (
-        <Box sx={{ width: '100%', height: sortedData.length * 45 + 40 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              layout="vertical"
-              data={sortedData}
-              margin={{ top: 10, right: 40, left: 150, bottom: 10 }}
-              barCategoryGap="15%"
-            >
-              <XAxis
-                type="number"
-                orientation="top"
-                tick={{ fontSize: 12 }}
-              />
-              <YAxis
-                type="category"
-                dataKey="Nom du flux"
-                width={300}
-                interval={0}
-                tickFormatter={formatLabel}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="valeur" fill="#007acc">
-                <LabelList dataKey="valeur" position="right" />
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </Box>
+        <Plot
+          data={[
+            {
+              type: 'bar',
+              x: values,
+              y: labels,
+              text: tooltips,
+              orientation: 'h',
+              hoverinfo: 'text',
+              marker: {
+                color: '#007acc',
+              }
+            }
+          ]}
+          layout={{
+            margin: { l: 300, r: 40, t: 40, b: 40 },
+            xaxis: {
+              title: 'Valeur (échelle logarithmique)',
+              type: 'log',
+              side: 'top',
+              tickfont: { size: 12 }
+            },
+            yaxis: {
+              automargin: true,
+              tickfont: { size: 12 }
+            },
+            height: sortedData.length * 45 + 80,
+            showlegend: false
+          }}
+          config={{ responsive: true }}
+          style={{ width: '100%' }}
+        />
       )}
     </Box>
   );
