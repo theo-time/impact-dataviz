@@ -27,7 +27,7 @@ export default function StackedBarChart({ data, xScale }) {
 
     // Étape 3 : trier les flux par somme décroissante
     const sortedFlux = fluxWithSums
-      .sort((a, b) => b.somme - a.somme)
+      .sort((a, b) => a.somme - b.somme)
       .map(entry => entry.nom);
 
     // Étape 4 : liste des catégories
