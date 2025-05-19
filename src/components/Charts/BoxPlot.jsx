@@ -1,13 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Plot from 'react-plotly.js';
 
-export default function BoxPlot({ data }) {
-  if (!data || data.length === 0) return null;
-
-  // Nettoyage
-  const values = data
-    .map(d => Number(d.valeur))
-    .filter(v => !isNaN(v) && isFinite(v) && v > 0); // supprime les valeurs nulles ou absurdes
+export default function BoxPlot({ data, useLogScale }) {
 
   function wrapLabel(text, maxLineLength = 40) {
     const words = text.split(' ');
@@ -26,10 +20,20 @@ export default function BoxPlot({ data }) {
     return lines.join('<br>');
   }
 
+  // If the chart is in linear scale, remove the outliers (10 biggest and 10 smallest)
+  if (!useLogScale) {
+    const sortedData = [...data].sort((a, b) => a.valeur - b.valeur);
+    data = sortedData.slice(30, -30)
+  }
+
+  if (!data || data.length === 0) return null;
+
+  const values = data.map(d => d.valeur);
   const labels = data.map(d => d['Nom du flux']?.trim() || '');
-  const unit = data[0]['Unité de référence']?.trim() || 'Valeur';
-  console.log(unit)
+  const unit = data[0]?.['Unité de référence']?.trim() || 'Valeur';
+
   return (
+
     <Plot
       data={[
         {
@@ -52,9 +56,10 @@ export default function BoxPlot({ data }) {
         margin: { t: 40, r: 30, l: 60, b: 40 },
         yaxis: {
           title: { text: unit },
-          type: 'log',
+          type: useLogScale ? 'log' : 'linear',
           zeroline: false,
-          gridcolor: '#eee'
+          gridcolor: '#eee',
+          autorange: true
         },
         xaxis: {
           showticklabels: false,

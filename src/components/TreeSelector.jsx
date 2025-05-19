@@ -10,11 +10,7 @@ const renderTree = (node, path = '', setSelectedNode) => {
     const level = path === '' ? 0 : path.split('/').length;
     const pathArray = path === '' ? [label] : path.split('/').concat(label);
 
-    // Do not display the leaves
-    if (children === null || typeof children !== 'object') {
-      return null;
-    }
-
+    if (children === null || label.trim() === '' || typeof children !== 'object') return null;
     // Do not display categories with empty trimmed label
     if (label.trim() === '') {
       return null;
@@ -23,19 +19,42 @@ const renderTree = (node, path = '', setSelectedNode) => {
 
     const handleClick = (e) => {
       e.stopPropagation();
-      // console.log(`Clicked: ${label} | level ${level} | itemId: ${itemId}`);
-      // console.log(`Path: ${JSON.stringify(pathObj)}`);
-      // console.log(`Clicked: ${label} | level ${level} | itemId: ${itemId}`);
       setSelectedNode({ level, label, path: pathArray });
     };
-
     if (children === null || typeof children !== 'object') {
       return <TreeItem key={itemId} itemId={itemId} label={label} onClick={handleClick} />;
     }
     return (
       <TreeItem
-        key={itemId} itemId={itemId} label={label}
-        onClick={handleClick}>
+        key={itemId}
+        itemId={itemId}
+        label={
+          <span style={{
+            fontWeight: level < 2 ? 600 : 500,
+            fontSize: level === 0 ? '1rem' : level === 1 ? '0.95rem' : '0.9rem',
+            opacity: level > 2 ? 0.7 : 0.85,
+            color: '#0C2B4D'
+          }}>
+            {label}
+          </span>
+        }
+        onClick={handleClick}
+        sx={{
+          // paddingLeft: `${level * 8}px`,
+          '& .MuiTreeItem-content': {
+            paddingLeft: `${level * 20}px`,
+            // adapt vertical gaps also 
+            // marginTop: `${(4 - level) * 1}px`,
+            // marginBottom: `${(4 - level) * 1}px`,
+          },
+          '& .MuiTreeItem-content:hover': {
+            backgroundColor: 'rgba(0, 123, 255, 0.06)',
+          },
+          '& .Mui-selected > .MuiTreeItem-content': {
+            backgroundColor: 'rgba(0, 123, 255, 0.15)',
+          },
+        }}
+      >
         {renderTree(children, itemId, setSelectedNode)}
       </TreeItem>
     );
@@ -44,7 +63,7 @@ const renderTree = (node, path = '', setSelectedNode) => {
 
 export default function TreeSelector({ selectedNode, setSelectedNode }) {
   return (
-    <Box sx={{ minHeight: 400, minWidth: 300 }}>
+    <Box sx={{ minHeight: 400, minWidth: 280, p: 2 }}>
       <SimpleTreeView>
         {renderTree(categoryTree, '', setSelectedNode)}
       </SimpleTreeView>

@@ -8,7 +8,6 @@ export default function CategoryNavigator({ selectedNode, setSelectedNode }) {
   if (!selectedNode || !selectedNode.path || selectedNode.path.length === 0) {
     return null;
   }
-  console.log('selectedNode', selectedNode);
 
 
   return (
