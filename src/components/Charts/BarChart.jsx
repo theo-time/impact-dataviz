@@ -10,7 +10,54 @@ import {
 import Plot from 'react-plotly.js';
 import impactColors from '../../configs/colorCode.js';
 
+function removeProductionSuffix(input) {
+  const target1 = ", production industrielle; mix national français, à l'usine";
+  const target2 = "; production industrielle; mix national français, à l'usine";
+
+  var input = input.replace(target1, '');
+  input = input.replace(target2, '');
+  return input;
+}
+
+function getShortLabel(procede, maxLength = 300) {
+  var nomprocede = procede["Nom du flux"]?.trim() ?? '';
+
+  if (!nomprocede) return '';
+  // Remove any leading or trailing whitespace
+  nomprocede = nomprocede.trim();
+  // If the label is empty after trimming, return an empty string
+  if (nomprocede.length === 0) return '';
+
+  // If procede contains "production industrielle etc.." remove it
+  if (nomprocede.includes("production industrielle")) {
+    return removeProductionSuffix(nomprocede);
+  }
+
+  // Otherwise, return the  last part with ellipsis
+  return nomprocede;
+}
+
 export default function BarChart({ data, xScale, dispModeBar = true, legendSizePercent = 0.2 }) {
+
+  function wrapLabel(label, maxLength = 30) {
+    if (!label) return '';
+    const words = label.split(/\s+/);
+    let lines = [];
+    let currentLine = '';
+
+    for (let word of words) {
+      if ((currentLine + ' ' + word).trim().length > maxLength) {
+        lines.push(currentLine.trim());
+        currentLine = word;
+        if (lines.length === 1) break; // max 2 lignes
+      } else {
+        currentLine += ' ' + word;
+      }
+    }
+
+    lines.push(currentLine.trim());
+    return lines.join('\n');
+  }
 
   const sortedData = useMemo(() => {
     return [...data].sort((a, b) => a.valeur - b.valeur); // tri croissant
@@ -20,7 +67,7 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
   const referenceUnit = sortedData[0]?.["Unité de référence"]?.trim() ?? '';
 
 
-  const labels = sortedData.map(d => d["Nom du flux"]);
+  const labels = sortedData.map(d => getShortLabel(d));
   const values = sortedData.map(d => d.valeur);
   const tooltips = sortedData.map(d => {
     const nom = d["Nom du flux"]?.trim() ?? '';
@@ -77,6 +124,7 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
           yaxis: {
             tickfont: { size: 12 },
             domain: [0, 1],
+            margin: { t: 0, b: 0, r: 100 },
             automargin: false
           },
           height: sortedData.length * 40 + 100,
