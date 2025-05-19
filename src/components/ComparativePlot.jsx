@@ -8,6 +8,8 @@ import {
 import Plot from 'react-plotly.js';
 import CategoryNavigator from './CategoryNavigator.jsx';
 
+import './ComparativePlot.css';
+
 export default function ComparativePlot({ data, selectedNode, setSelectedNode }) {
   const [category, setCategory] = useState('Acidification');
 
@@ -44,8 +46,18 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     const uniteRef = d["Unité de référence"]?.trim() ?? '';
     const qte = d["Quantité de référence"]?.trim() ?? '';
     const unite = d["Unité"]?.trim() ?? '';
-    return `${nom}<br><b>${valeur} ${uniteRef} par ${qte} ${unite}</b>`;
+
+    return `
+    <span style="font-size: 13px; color: black;">
+      ${nom}<br />
+      <span style="color:#007acc; font-size: 16px; font-weight: bold;">
+        ${valeur} ${uniteRef} par ${qte} ${unite}
+      </span>
+    </span>
+  `;
   });
+
+
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -79,11 +91,10 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
               x: values,
               y: labels,
               text: tooltips,
-              orientation: 'h',
               hoverinfo: 'text',
-              marker: {
-                color: '#007acc',
-              }
+              hovertemplate: '%{text}<extra></extra>',
+              orientation: 'h',
+              marker: { color: '#007acc' }
             }
           ]}
           layout={{
@@ -92,18 +103,29 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
               title: 'Valeur (échelle logarithmique)',
               type: 'log',
               side: 'top',
-              tickfont: { size: 12 }
+              tickfont: { size: 12 },
             },
             yaxis: {
-              automargin: true,
-              tickfont: { size: 12 }
+              tickfont: { size: 12 },
+              domain: [0.3, 1],
+              automargin: false
             },
-            height: sortedData.length * 45 + 80,
-            showlegend: false
+            height: sortedData.length * 30 + 100,
+            showlegend: false,
+            hovermode: 'closest',
+            hoverlabel: {
+              bgcolor: 'white',
+              bordercolor: 'black',
+              font: {
+                color: 'black',
+                size: 12
+              }
+            }
           }}
           config={{ responsive: true }}
           style={{ width: '100%' }}
         />
+
       )}
     </Box>
   );
