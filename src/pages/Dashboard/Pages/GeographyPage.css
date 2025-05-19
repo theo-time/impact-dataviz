@@ -2,26 +2,29 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
+  font-family: 'Source Sans Pro', sans-serif;
+  padding-top: 40px;
 }
 
 .bar-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: sans-serif;
 }
 
 .label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 30%;
-  padding-right: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 30%;
+    padding-right: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #767676;
 }
 
 .flag {
@@ -40,17 +43,34 @@
   gap: 8px;
 }
 
-.bar {
-  height: 18px;
+.geo-bar {
+  height: 25px;
   background-color: #007acc;
   border-radius: 4px;
   min-width: 4px;
   flex-shrink: 0;
   position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.bar:hover {
+  background-color: #005b99;
 }
 
 .value {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: #333;
   white-space: nowrap;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.value strong {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.unit {
+  font-weight: normal;
+  font-size: 0.85rem;
+  margin-left: 2px;
 }

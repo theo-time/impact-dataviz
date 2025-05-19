@@ -1,13 +1,15 @@
 // File: GeographyPage.jsx
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import mixElecData from '../../../data/mix_electriques.json';
 import DashboardPage from '../DashboardPage.jsx';
 import FlagMap from '../../../data/flags_by_country.json';
 import './GeographyPage.css';
-import { MenuItem, TextField } from '@mui/material';
+import { MenuItem, TextField, Tooltip } from '@mui/material';
+import impactColors from '../../../configs/colorCode.js';
 
 export default function GeographyPage() {
   const [category, setCategory] = useState('Changement climatique');
+  const [filteredData, setFilteredData] = useState([]);
 
   const categories = useMemo(() => {
     const set = new Set();
@@ -19,12 +21,12 @@ export default function GeographyPage() {
     return Array.from(set).sort();
   }, []);
 
-  const filteredData = useMemo(() => {
+
+  useEffect(() => {
     const filtered = mixElecData.filter(item => item.category_name?.trim() === category && item.valeur > 0);
     const maxValue = Math.max(...filtered.map(item => item.valeur));
-    console.log('maxValue', maxValue);
-    console.log('itemWithMaxValue', mixElecData.find(item => item.valeur === maxValue));
-    return filtered
+    console.log(maxValue);
+    const final_filtered = filtered
       .map(item => ({
         country: item["Zone géographique"],
         value: item.valeur,
@@ -32,12 +34,11 @@ export default function GeographyPage() {
         unit: item["Unité de référence"]
       }))
       .sort((a, b) => b.value - a.value);
+    setFilteredData(final_filtered);
   }, [category]);
-
 
   return (
     <DashboardPage title="Analyses par pays" subtitle="Par pays">
-      <label htmlFor="category-select">Catégorie d’impact :</label>
       <TextField
         select
         label="Catégorie d’impact"
@@ -53,19 +54,42 @@ export default function GeographyPage() {
       </TextField>
 
       <div className="bar-chart-container">
-        {filteredData.map(({ country, value, unit, value_normalized }) => {
-          const widthPercent = value_normalized * 100 - 2;
-          const flag = FlagMap[country] || '🌍';
+        {filteredData.map(({ country, value, unit, value_normalized }, index) => {
+          const widthPercent = value_normalized * 100 - 15;
+          const tooltipContent = (
+            <>
+              <div style={{ fontWeight: 'bold', marginBottom: 4 }}>{country}</div>
+              <div>{value.toLocaleString('fr-FR', { maximumSignificantDigits: 3 })} {unit}</div>
+            </>
+          );
+
           return (
-            <div key={country} className="bar-row">
+            <div key={country + unit} className="bar-row">
               <div className="label">
-                <span className="flag">{flag}</span>
+                {/* <img src={`https://flagcdn.com/w40/${FlagMap[country].toLowerCase()}.png`} alt={country} /> */}
                 <span className="country">{country}</span>
               </div>
               <div className="bar-wrapper">
-                <div className="bar" style={{ width: `${widthPercent}%` }}>
-                </div>
-                <span className="value">{value.toLocaleString('fr-FR', { maximumSignificantDigits: 3 })} {unit}</span>
+                <Tooltip
+                  title={tooltipContent}
+                  arrow
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: 'white',
+                        color: 'black',
+                        border: '1px solid black',
+                        fontSize: '0.85rem',
+                        padding: '6px 10px'
+                      }
+                    }
+                  }}
+                >
+                  <div className="geo-bar" style={{ width: `${widthPercent}%`, backgroundColor: impactColors[category] ?? '#999' }}></div>
+                </Tooltip>
+                <span className="value">
+                  <strong>{value.toLocaleString('fr-FR', { maximumSignificantDigits: 3 })}</strong> <span className="unit">{unit}</span>
+                </span>
               </div>
             </div>
           );
