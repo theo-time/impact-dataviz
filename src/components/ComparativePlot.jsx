@@ -3,7 +3,8 @@ import {
   Box,
   Typography,
   TextField,
-  MenuItem
+  MenuItem,
+  Button
 } from '@mui/material';
 import Plot from 'react-plotly.js';
 import CategoryNavigator from './CategoryNavigator.jsx';
@@ -12,6 +13,11 @@ import './ComparativePlot.css';
 
 export default function ComparativePlot({ data, selectedNode, setSelectedNode }) {
   const [category, setCategory] = useState('Acidification');
+  const [xScale, setXScale] = useState('log');
+
+  const toggleScale = () => {
+    setXScale(prev => (prev === 'log' ? 'linear' : 'log'));
+  };
 
   const categoryOptions = useMemo(() => {
     const set = new Set();
@@ -62,6 +68,7 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
   return (
     <Box sx={{ mt: 4 }}>
       <CategoryNavigator selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
+
       <Typography variant="h6" gutterBottom>
         Comparatif des impacts environnementaux
       </Typography>
@@ -80,6 +87,9 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
           </MenuItem>
         ))}
       </TextField>
+      <Button variant="outlined" onClick={toggleScale}>
+        {xScale === 'log' ? 'Echelle logarithmique' : 'Echelle linéaire'}
+      </Button>
 
       {sortedData.length === 0 ? (
         <Typography variant="body2">Aucune donnée disponible.</Typography>
@@ -94,20 +104,21 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
               hoverinfo: 'text',
               hovertemplate: '%{text}<extra></extra>',
               orientation: 'h',
-              marker: { color: '#007acc' }
+              marker: { color: '#007acc' },
+              textposition: 'none'
             }
           ]}
           layout={{
             margin: { l: 300, r: 40, t: 40, b: 40 },
             xaxis: {
               title: 'Valeur (échelle logarithmique)',
-              type: 'log',
+              type: xScale,
               side: 'top',
               tickfont: { size: 12 },
             },
             yaxis: {
               tickfont: { size: 12 },
-              domain: [0.3, 1],
+              domain: [0.4, 1],
               automargin: false
             },
             height: sortedData.length * 30 + 100,

@@ -3,6 +3,7 @@ import impactsLongMerged from '../data/impacts_long_merged.json';
 
 import TreeSelector from '../components/TreeSelector.jsx';
 import ComparativePlot from '../components/ComparativePlot.jsx';
+import { Button } from '@mui/material';
 
 export default function CategoryBrowser() {
   const [count, setCount] = useState(0)
@@ -10,6 +11,7 @@ export default function CategoryBrowser() {
 
   return (
     <>
+
       <div className='explore-page'>
         <div className='tree-selector-container'>
           {/* <div>Level: {selectedNode.level}</div>
