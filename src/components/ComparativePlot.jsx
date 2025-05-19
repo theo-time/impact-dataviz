@@ -19,8 +19,16 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
   const [category, setCategory] = useState('Acidification');
   const [xScale, setXScale] = useState('log');
   const [chartType, setChartType] = useState('bar'); // 'bar' | 'stacked' | 'heatmap'
-  const [groupedMode, setGroupedMode] = useState(false);
+  const [groupedMode, setGroupedMode] = useState(true);
 
+  const toggleGroupedMode = () => {
+    // Si on est à la racine, on ne peut que grouper
+    if (selectedNode.level === -1) {
+      setGroupedMode(true);
+      return;
+    }
+    setGroupedMode(prev => !prev);
+  };
 
   const toggleScale = () => {
     setXScale(prev => (prev === 'log' ? 'linear' : 'log'));
@@ -35,18 +43,22 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
   }, [data]);
 
   const filtered = useMemo(() => {
-    if (!selectedNode?.path || !category) return [];
+    if (!category) return [];
     const { path, level } = selectedNode;
-
+    console.log('data', data)
     return data.filter(row =>
-      path[0] === row.Categorie_niv_1 &&
-      (level < 1 || path[1] === row.Categorie_niv_2) &&
-      (level < 2 || path[2] === row.Categorie_niv_3) &&
-      (level < 3 || path[3] === row.Categorie_niv_4)
+      level === -1 ||
+      (
+        (path[0] === row.Categorie_niv_1) &&
+        (level < 1 || path[1] === row.Categorie_niv_2) &&
+        (level < 2 || path[2] === row.Categorie_niv_3) &&
+        (level < 3 || path[3] === row.Categorie_niv_4)
+      )
     );
   }, [data, selectedNode, category]);
 
   const filteredFinal = useMemo(() => {
+
     // Si on n'est pas en mode "groupé", on retourne les données filtrées
     if (!groupedMode) return filtered;
 

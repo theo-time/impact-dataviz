@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 
 export default function CategoryBrowser() {
   const [count, setCount] = useState(0)
-  const [selectedNode, setSelectedNode] = useState({ level: null, label: null });
+  const [selectedNode, setSelectedNode] = useState({ level: -1, label: null });
 
   return (
     <>
