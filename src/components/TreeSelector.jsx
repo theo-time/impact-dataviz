@@ -19,7 +19,10 @@ const renderTree = (node, path = '', setSelectedNode) => {
 
     const handleClick = (e) => {
       e.stopPropagation();
-      setSelectedNode({ level, label, path: pathArray });
+      const isLastBranch = Object.keys(children).length === 0 || Object.keys(children).every(key => key.trim() === '' || typeof children[key] !== 'object');
+      console.warn(Object.keys(children))
+      console.warn(isLastBranch)
+      setSelectedNode({ level, label, path: pathArray, isLastBranch });
     };
     if (children === null || typeof children !== 'object') {
       return <TreeItem key={itemId} itemId={itemId} label={label} onClick={handleClick} />;
