@@ -10,7 +10,7 @@ import {
 import Plot from 'react-plotly.js';
 import impactColors from '../../configs/colorCode.js';
 
-export default function BarChart({ data, xScale }) {
+export default function BarChart({ data, xScale, dispModeBar = true, legendSizePercent = 0.2 }) {
 
   const sortedData = useMemo(() => {
     return [...data].sort((a, b) => a.valeur - b.valeur); // tri croissant
@@ -66,16 +66,17 @@ export default function BarChart({ data, xScale }) {
           }
         ]}
         layout={{
-          margin: { l: 300, r: 40, t: 40, b: 40 },
+          margin: { l: 300, r: 40, t: 40, b: 0 },
           xaxis: {
             title: 'Valeur (échelle logarithmique)',
             type: xScale,
             side: 'top',
             tickfont: { size: 12 },
+            domain: [legendSizePercent, 1],
           },
           yaxis: {
             tickfont: { size: 12 },
-            domain: [0.4, 1],
+            domain: [0, 1],
             automargin: false
           },
           height: sortedData.length * 40 + 100,
@@ -90,7 +91,10 @@ export default function BarChart({ data, xScale }) {
             }
           }
         }}
-        config={{ responsive: true }}
+        config={{
+          responsive: true,
+          displayModeBar: dispModeBar
+        }}
         style={{ width: '100%' }}
       />
     </>
