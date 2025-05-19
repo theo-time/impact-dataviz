@@ -1,100 +1,35 @@
 // File: GeographyPage.jsx
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import mixElecData from '../../../data/mix_electriques.json';
+import transportFerroData from '../../../data/transport_ferro.json';
+import transportRoutierData from '../../../data/transport_routier.json';
 import DashboardPage from '../DashboardPage.jsx';
-import FlagMap from '../../../data/flags_by_country.json';
 import './GeographyPage.css';
-import { MenuItem, TextField, Tooltip } from '@mui/material';
-import impactColors from '../../../configs/colorCode.js';
+import { Tabs, Tab, Box } from '@mui/material';
+import CountryRanking from '../../../components/Charts/CountryRanking.jsx';
 
 export default function GeographyPage() {
-  const [category, setCategory] = useState('Changement climatique');
-  const [filteredData, setFilteredData] = useState([]);
+  const [selectedDataset, setSelectedDataset] = useState('mix');
 
-  const categories = useMemo(() => {
-    const set = new Set();
-    mixElecData.forEach(item => {
-      if (item.category_name && item.valeur > 0) {
-        set.add(item.category_name.trim());
-      }
-    });
-    return Array.from(set).sort();
-  }, []);
-
-
-  useEffect(() => {
-    const filtered = mixElecData.filter(item => item.category_name?.trim() === category && item.valeur > 0);
-    const maxValue = Math.max(...filtered.map(item => item.valeur));
-    console.log(maxValue);
-    const final_filtered = filtered
-      .map(item => ({
-        country: item["Zone géographique"],
-        value: item.valeur,
-        value_normalized: item.valeur / maxValue,
-        unit: item["Unité de référence"]
-      }))
-      .sort((a, b) => b.value - a.value);
-    setFilteredData(final_filtered);
-  }, [category]);
+  const datasets = {
+    mix: mixElecData,
+    ferro: transportFerroData,
+    routier: transportRoutierData
+  };
 
   return (
-    <DashboardPage title="Analyses par pays" subtitle="Par pays">
-      <TextField
-        select
-        label="Catégorie d’impact"
-        value={category}
-        onChange={e => setCategory(e.target.value)}
-        size="small"
+    <DashboardPage title="Analyses par pays" subtitle="Par secteur">
+      <Tabs
+        value={selectedDataset}
+        onChange={(e, val) => setSelectedDataset(val)}
+        sx={{ mb: 3 }}
       >
-        {categories.map(opt => (
-          <MenuItem key={opt} value={opt}>
-            {opt}
-          </MenuItem>
-        ))}
-      </TextField>
+        <Tab label="Mix électrique" value="mix" />
+        <Tab label="Transport ferroviaire" value="ferro" />
+        <Tab label="Transport routier" value="routier" />
+      </Tabs>
 
-      <div className="bar-chart-container">
-        {filteredData.map(({ country, value, unit, value_normalized }, index) => {
-          const widthPercent = value_normalized * 100 - 15;
-          const tooltipContent = (
-            <>
-              <div style={{ fontWeight: 'bold', marginBottom: 4 }}>{country}</div>
-              <div>{value.toLocaleString('fr-FR', { maximumSignificantDigits: 3 })} {unit}</div>
-            </>
-          );
-
-          return (
-            <div key={country + unit} className="bar-row">
-              <div className="label">
-                {/* <img src={`https://flagcdn.com/w40/${FlagMap[country].toLowerCase()}.png`} alt={country} /> */}
-                <span className="country">{country}</span>
-              </div>
-              <div className="bar-wrapper">
-                <Tooltip
-                  title={tooltipContent}
-                  arrow
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        bgcolor: 'white',
-                        color: 'black',
-                        border: '1px solid black',
-                        fontSize: '0.85rem',
-                        padding: '6px 10px'
-                      }
-                    }
-                  }}
-                >
-                  <div className="geo-bar" style={{ width: `${widthPercent}%`, backgroundColor: impactColors[category] ?? '#999' }}></div>
-                </Tooltip>
-                <span className="value">
-                  <strong>{value.toLocaleString('fr-FR', { maximumSignificantDigits: 3 })}</strong> <span className="unit">{unit}</span>
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <CountryRanking data={datasets[selectedDataset]} datasetName={selectedDataset} />
     </DashboardPage>
   );
 }

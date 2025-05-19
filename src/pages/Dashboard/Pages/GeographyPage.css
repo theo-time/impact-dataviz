@@ -5,6 +5,7 @@
   gap: 10px;
   font-family: 'Source Sans Pro', sans-serif;
   padding-top: 40px;
+  overflow-x: hidden;
 }
 
 .bar-row {
