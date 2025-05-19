@@ -1,6 +1,47 @@
-import React from 'react'
 
-export default function BarChart() {
+import React, { useMemo } from 'react'
+import {
+  Box,
+  Typography,
+  TextField,
+  MenuItem,
+  Button
+} from '@mui/material';
+import Plot from 'react-plotly.js';
+
+export default function BarChart({ data, xScale }) {
+
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => a.valeur - b.valeur); // tri croissant
+  }, [data]);
+
+  console.log('sortedData', sortedData);
+
+  const labels = sortedData.map(d => d["Nom du flux"]);
+  const values = sortedData.map(d => d.valeur);
+  const tooltips = sortedData.map(d => {
+    const nom = d["Nom du flux"]?.trim() ?? '';
+    const valeur = d.valeur?.toLocaleString('fr-FR', { maximumSignificantDigits: 3 }) ?? '';
+    const uniteRef = d["Unité de référence"]?.trim() ?? '';
+    const qte = d["Quantité de référence"]?.trim() ?? '';
+    const unite = d["Unité"]?.trim() ?? '';
+
+    return `
+    <span style="font-size: 13px; color: black;">
+      ${nom}<br />
+      <span style="color:#007acc; font-size: 16px; font-weight: bold;">
+        ${valeur} ${uniteRef} par ${qte} ${unite}
+      </span>
+    </span>
+  `;
+  });
+
+  if (sortedData.length === 0) {
+    return (
+      <Typography variant="body2">Aucune donnée disponible.</Typography>
+    )
+  }
+
   return (
     <Plot
       data={[
@@ -29,7 +70,7 @@ export default function BarChart() {
           domain: [0.4, 1],
           automargin: false
         },
-        height: sortedData.length * 30 + 100,
+        height: sortedData.length * 40 + 100,
         showlegend: false,
         hovermode: 'closest',
         hoverlabel: {
