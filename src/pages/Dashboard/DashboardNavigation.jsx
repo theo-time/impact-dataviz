@@ -8,6 +8,7 @@ export default function DashboardNavigation() {
     { label: 'Sunburst', path: '/dashboard/sunburst' },
     { label: 'Correlation', path: '/dashboard/correlation' },
     { label: 'Procédés les plus impactants', path: '/dashboard/greatest-impacts' },
+    { label: 'Données Géographiques', path: '/dashboard/geography' },
   ];
 
   return (
