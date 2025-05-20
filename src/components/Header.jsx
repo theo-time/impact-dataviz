@@ -12,7 +12,7 @@ export default function Header() {
       <header className="header-menu">
         {/* <div className="logo">ImpactVIZ</div> */}
         <nav className="nav-links">
-          <NavLink to="/" className="nav-link">Accueil</NavLink>
+          <NavLink to="/" className="nav-link">Home</NavLink>
           <NavLink to="/dashboard" className="nav-link">Dashboard</NavLink>
           <NavLink to="/category-browser" className="nav-link">Exploration</NavLink>
           <NavLink to="/metadata" className="nav-link">Métadonnées</NavLink>

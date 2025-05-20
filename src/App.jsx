@@ -11,6 +11,7 @@ import SunburstPage from './pages/Dashboard/Pages/SunburstPage.jsx';
 import CorrelationPage from './pages/Dashboard/Pages/CorrelationPage.jsx';
 import GreatestImpacts from './pages/Dashboard/Pages/GreatestImpacts.jsx';
 import GeographyPage from './pages/Dashboard/Pages/GeographyPage.jsx';
+import HomePage from './pages/HomePage.jsx';
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
     <div className='app'>
       <Header />
       <Routes>
-        <Route path="/" element={<CategoryBrowser />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/category-browser" element={<CategoryBrowser />} />
         <Route path='/metadata' element={<Metadata />} />
         <Route path='/metadata-procede' element={<MetadataProcedes />} />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Plot from 'react-plotly.js';
 
-export default function BoxPlot({ data, useLogScale }) {
+export default function BoxPlot({ data, useLogScale, color }) {
 
   function wrapLabel(text, maxLineLength = 40) {
     const words = text.split(' ');
@@ -43,7 +43,7 @@ export default function BoxPlot({ data, useLogScale }) {
           boxpoints: 'all',
           jitter: 0.6,
           pointpos: 0,
-          marker: { color: '#007acc', size: 5 },
+          marker: { color: color, size: 5 },
           line: { color: '#007acc' },
           fillcolor: 'rgba(0,122,204,0.1)',
           hovertext: labels.map(label => wrapLabel(label)),

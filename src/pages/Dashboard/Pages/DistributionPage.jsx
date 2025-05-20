@@ -4,6 +4,7 @@ import impactsLongMerged from '../../../data/impacts_long_merged.json';
 import categoryImpacts from '../../../data/categorie_impacts.json';
 import './DistributionPage.scss';
 import DashboardPage from '../DashboardPage.jsx';
+import impactColors from '../../../configs/colorCode.js';
 
 export default function DistributionPage() {
   const [useLogScale, setUseLogScale] = useState(true);
@@ -36,7 +37,7 @@ En un coup d’ œil, identifiez les procédés les plus impactants."
           return (
             <div key={index} className="boxplot-card">
               <div className='chart-title'>{cat['Nom français']?.trim() || 'Catégorie'}</div>
-              <BoxPlot data={filtered} useLogScale={useLogScale} />
+              <BoxPlot data={filtered} useLogScale={useLogScale} color={impactColors[cat['Nom français']?.trim()]} />
             </div>
           );
         })}
