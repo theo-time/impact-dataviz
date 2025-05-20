@@ -11,8 +11,16 @@ export default function CategoryNavigator({ selectedNode, setSelectedNode }) {
 
 
   return (
+    //     border-bottom: 1px solid #d1d1d1;
+    // padding-top: 5px;
+    // padding-bottom: 5px;
     selectedNode?.path && (
-      <Breadcrumbs separator="›" aria-label="fil d’ariane" sx={{ mb: 2 }}>
+      <Breadcrumbs separator="›" aria-label="fil d’ariane" sx={{
+        mb: 2,
+        paddingTop: '0.5rem',
+        paddingBottom: '0.5rem',
+        borderBottom: '1px solid #d1d1d1',
+      }}>
         {selectedNode.path.map((segment, index) => {
           const isLast = index === selectedNode.path.length - 1;
           return isLast ? (

@@ -7,7 +7,9 @@ import {
   Button,
   Stack,
   Tabs,
-  Tab
+  Tab,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import CategoryNavigator from './CategoryNavigator.jsx';
 
@@ -58,7 +60,7 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
         )
       )
       && (
-        positiveMode ?
+        !positiveMode ?
           row.valeur >= 0
           : row.valeur < 0
       )
@@ -117,59 +119,95 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     <Box sx={{ mt: 4 }}>
       <CategoryNavigator selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
 
-      <Typography variant="h6" gutterBottom>
-        Comparatif des impacts environnementaux
-      </Typography>
 
       <Tabs
         value={chartType}
         onChange={(e, val) => setChartType(val)}
         sx={{ mb: 2 }}
       >
-        <Tab label="Bar Chart" value="bar" />
-        <Tab label="Stacked Bar Chart" value="stacked" />
+        <Tab label="Impact unique" value="bar" />
+        <Tab label="Multi-impact" value="stacked" />
         <Tab label="Heatmap" value="heatmap" />
       </Tabs>
-
-      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-        <TextField
-          select
-          label="Catégorie d’impact"
-          value={category}
-          onChange={e => setCategory(e.target.value)}
-          size="small"
+      <div style={{ padding: '2rem' }}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ mb: 2, flexWrap: 'wrap' }}
         >
-          {categoryOptions.map(opt => (
-            <MenuItem key={opt} value={opt}>
-              {opt}
-            </MenuItem>
-          ))}
-        </TextField>
-        <Button variant="outlined" onClick={toggleGroupedMode}>
-          {groupedMode ? 'Voir les procédés' : 'Voir les sous-catégories'}
-        </Button>
+          {/* Sélecteur à gauche */}
+          {
+            chartType === 'bar' ?
+              <TextField
+                select
+                label="Catégorie d’impact"
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+                size="medium"
+                sx={{ width: 400 }}
+                disabled={chartType !== 'bar'} // ← Activation conditionnelle
+              >
+                {categoryOptions.map(opt => (
+                  <MenuItem key={opt} value={opt}>
+                    {opt}
+                  </MenuItem>
+                ))}
+              </TextField>
+              :
+              <div style={{ height: '56px' }}></div>
+          }
+
+          {/* Switchs à droite */}
+          <Stack direction="row" spacing={2} alignItems="center" >
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={!groupedMode}
+                  onChange={toggleGroupedMode}
+                  size="small"
+                />
+              }
+              label={<Typography variant="body2">Détail Procédés</Typography>} // ← Police plus petite
+            />
+
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={xScale === 'log'}
+                  onChange={toggleScale}
+                  size="small"
+                />
+              }
+              label={<Typography variant="body2">Échelle logarithmique</Typography>}
+            />
+
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={positiveMode}
+                  onChange={() => setPositiveMode(prev => !prev)}
+                  size="small"
+                />
+              }
+              label={<Typography variant="body2">Valeurs négatives</Typography>}
+            />
+          </Stack>
+        </Stack>
 
 
-        <Button variant="outlined" onClick={toggleScale}>
-          {xScale === 'log' ? 'Échelle logarithmique' : 'Échelle linéaire'}
-        </Button>
-
-        <Button variant="outlined" onClick={() => setPositiveMode(prev => !prev)}>
-          {positiveMode ? 'Afficher les valeurs positives' : 'Afficher les valeurs négatives'}
-        </Button>
-      </Stack>
-
-      {chartType === 'bar' && (
-        <BarChart data={filteredFinal.filter(d => d.category_name?.trim() === category)} xScale={xScale} />
-      )}
-      {chartType === 'stacked' && (
-        <StackedBarChart data={filteredFinal} xScale={xScale} />
-      )}
-      {chartType === 'heatmap' && (
-        <Box sx={{ p: 4 }}>
-          <Typography variant="body1">📊 La heatmap sera bientôt disponible.</Typography>
-        </Box>
-      )}
+        {chartType === 'bar' && (
+          <BarChart data={filteredFinal.filter(d => d.category_name?.trim() === category)} xScale={xScale} />
+        )}
+        {chartType === 'stacked' && (
+          <StackedBarChart data={filteredFinal} xScale={xScale} />
+        )}
+        {chartType === 'heatmap' && (
+          <Box sx={{ p: 4 }}>
+            <Typography variant="body1">📊 La heatmap sera bientôt disponible.</Typography>
+          </Box>
+        )}
+      </div>
     </Box>
   );
 }

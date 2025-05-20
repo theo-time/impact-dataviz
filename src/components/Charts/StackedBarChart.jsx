@@ -98,7 +98,7 @@ export default function StackedBarChart({ data, xScale }) {
           }
         }
       }}
-      config={{ responsive: true }}
+      config={{ responsive: true, displayModeBar: false }}
       style={{ width: '100%' }}
     />
   );
