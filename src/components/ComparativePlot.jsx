@@ -17,9 +17,10 @@ import StackedBarChart from './Charts/StackedBarChart.jsx';
 
 export default function ComparativePlot({ data, selectedNode, setSelectedNode }) {
   const [category, setCategory] = useState('Acidification');
-  const [xScale, setXScale] = useState('log');
+  const [xScale, setXScale] = useState('linear');
   const [chartType, setChartType] = useState('bar'); // 'bar' | 'stacked' | 'heatmap'
   const [groupedMode, setGroupedMode] = useState(true);
+  const [positiveMode, setPositiveMode] = useState(false);
 
   const toggleGroupedMode = () => {
     // Si on est à la racine, on ne peut que grouper
@@ -47,18 +48,25 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     const { path, level } = selectedNode;
     console.log('data', data)
     return data.filter(row =>
-      level === -1 ||
       (
-        (path[0] === row.Categorie_niv_1) &&
-        (level < 1 || path[1] === row.Categorie_niv_2) &&
-        (level < 2 || path[2] === row.Categorie_niv_3) &&
-        (level < 3 || path[3] === row.Categorie_niv_4)
+        level === -1 ||
+        (
+          (path[0] === row.Categorie_niv_1) &&
+          (level < 1 || path[1] === row.Categorie_niv_2) &&
+          (level < 2 || path[2] === row.Categorie_niv_3) &&
+          (level < 3 || path[3] === row.Categorie_niv_4)
+        )
+      )
+      && (
+        positiveMode ?
+          row.valeur >= 0
+          : row.valeur < 0
       )
     );
-  }, [data, selectedNode, category]);
+  }, [data, selectedNode, category, positiveMode]);
 
   const filteredFinal = useMemo(() => {
-
+    console.log('filtered', filtered);
     // Si on n'est pas en mode "groupé", on retourne les données filtrées
     if (!groupedMode) return filtered;
 
@@ -137,13 +145,17 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
             </MenuItem>
           ))}
         </TextField>
-        <Button variant="outlined" onClick={() => setGroupedMode(prev => !prev)}>
+        <Button variant="outlined" onClick={toggleGroupedMode}>
           {groupedMode ? 'Voir les procédés' : 'Voir les sous-catégories'}
         </Button>
 
 
         <Button variant="outlined" onClick={toggleScale}>
           {xScale === 'log' ? 'Échelle logarithmique' : 'Échelle linéaire'}
+        </Button>
+
+        <Button variant="outlined" onClick={() => setPositiveMode(prev => !prev)}>
+          {positiveMode ? 'Afficher les valeurs positives' : 'Afficher les valeurs négatives'}
         </Button>
       </Stack>
 
