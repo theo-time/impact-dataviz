@@ -4,14 +4,20 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    height: 50px;
     padding: 10px;
     border-bottom: 1px solid #eee;
-    // background-color: #363f30;
-    // color: white;
+    background: #97ec97;
   .title-container
   {
     margin-left: 10px;
+  }
+
+  .subtitle 
+  {
+    font-size: 0.8rem;
+    color: #666;
+    // margin-top: 5px;
   }
 }
 
@@ -21,8 +27,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem 2rem;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
+  // background-color: #fff;
+  // border-bottom: 1px solid #eee;
 
   .logo {
     font-size: 1.5rem;

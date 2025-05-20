@@ -128,7 +128,9 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
 
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box
+    // sx={{ mt: 4 }}
+    >
       <CategoryNavigator selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
 
 

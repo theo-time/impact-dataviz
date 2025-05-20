@@ -79,7 +79,8 @@ export default function StackedBarChart({ data, xScale }) {
           tickfont: { size: 12 },
           tickmode: xScale === 'log' ? 'array' : 'auto',
           tickvals: xScale === 'log' ? [1e-9, 1e-6, 1e-3, 1, 1e3, 1e6, 1e9] : undefined,
-          ticktext: xScale === 'log' ? ['1 n', '1 µ', '1 m', '1', '1 k', '1 M', '1 G'] : undefined
+          ticktext: xScale === 'log' ? ['1 n', '1 µ', '1 m', '1', '1 k', '1 M', '1 G'] : undefined,
+          domain: [0.3, 1],
         },
         yaxis: {
           tickfont: { size: 12 },

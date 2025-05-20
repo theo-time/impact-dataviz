@@ -1,17 +1,27 @@
 
 .explore-page
 {
-  height:calc(100vh - 91px);
+  height:calc(100vh - 71px);
   display: flex;
   flex-direction: row;
   /* align-items: center; */
   // padding: 1rem;
-  gap: 20px;
+  // gap: 20px;
 
   .tree-selector-container
   {
     min-width: 400px;
     max-width: 400px;
+  }
+
+  .tree-selector-title
+  {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #7a7a7a;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: solid 1px #d0d0d0;
   }
 }
 
@@ -19,15 +29,18 @@
 {
   min-width: 40%;
   max-width: 40%;
-  height:calc(100vh - 91px);
+  height:calc(100vh - 71px);
   overflow: scroll;
   padding: 1rem;
   box-sizing: border-box;
+  background: #f7f7f7;
+  overflow-x: hidden;
+  border-right: 1px solid #eee;
 }
 
 .comparative-plot-container
 {
-  height:calc(100vh - 91px);
+  height:calc(100vh - 71px);
   overflow: scroll;
   flex-grow: 1;
   box-sizing: border-box;

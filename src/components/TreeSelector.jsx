@@ -33,7 +33,8 @@ const renderTree = (node, path = '', setSelectedNode) => {
         itemId={itemId}
         label={
           <span style={{
-            fontWeight: level < 2 ? 600 : 500,
+            // fontWeight: level < 2 ? 600 : 500,
+            fontWeight: 400,
             fontSize: level === 0 ? '1rem' : level === 1 ? '0.95rem' : '0.9rem',
             opacity: level > 2 ? 0.7 : 0.85,
             color: '#0C2B4D'

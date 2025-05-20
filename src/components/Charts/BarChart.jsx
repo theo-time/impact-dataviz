@@ -141,7 +141,7 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
         }}
         config={{
           responsive: true,
-          displayModeBar: dispModeBar
+          displayModeBar: false
         }}
         style={{ width: '100%' }}
       />

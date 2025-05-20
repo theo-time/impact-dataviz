@@ -16,6 +16,7 @@ export default function CategoryBrowser() {
         <div className='tree-selector-container'>
           {/* <div>Level: {selectedNode.level}</div>
           <div>Label: {selectedNode.label}</div> */}
+          <div className='tree-selector-title'> Catégories  </div>
           <TreeSelector selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
         </div>
         {/* <div className='comparative-plot-block'> */}
