@@ -5,7 +5,7 @@ import impactColors from '../../configs/colorCode.js';
 // import './CountryRanking.css';
 
 
-export default function CountryRanking({ data, datasetName }) {
+export default function CountryRanking({ data, datasetName, label }) {
   const [category, setCategory] = useState('Changement climatique');
   const [filteredData, setFilteredData] = useState([]);
 
@@ -41,7 +41,7 @@ export default function CountryRanking({ data, datasetName }) {
 
   return (
     <>
-      <h2>Classement des pays par impact du mix Electrique</h2>
+      <h4 style={{ fontSize: '25px' }}>{label}</h4>
       <TextField
         select
         label="Catégorie d’impact"
@@ -67,7 +67,7 @@ export default function CountryRanking({ data, datasetName }) {
           );
 
           return (
-            <div key={country + unit + datasetName} className="bar-row">
+            <div key={country + unit + impact_unit + datasetName} className="bar-row">
               <div className="label">
                 {/* <img src={`https://flagcdn.com/w40/${FlagMap[country].toLowerCase()}.png`} alt={country} /> */}
                 <span className="country">{country}</span>

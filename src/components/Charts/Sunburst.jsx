@@ -38,7 +38,7 @@ export default function SunburstChart({ data }) {
 
   for (let i = 0; i < paths.length; i++) {
     const path = paths[i];
-    const value = data[i].valeur;
+    const value = data[i].valeur_norm_q3 ?? 0; // valeur à agréger
 
     for (let j = 0; j < path.length; j++) {
       const id = path.slice(0, j + 1).join(" / ");

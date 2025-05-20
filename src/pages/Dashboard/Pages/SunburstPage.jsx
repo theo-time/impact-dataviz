@@ -19,7 +19,7 @@ export default function SunburstPage() {
     <DashboardPage
       title="Importance relative des catégories de procédés"
       subtitle="Chaque cercle concentrique de ce graphique représente un niveau de classification. La largeur de chaque élément est proportionnelle à sa part dans l'impact de la catégorie supérieure.
-Cela permet de visualiser la contribution relative de chaque catégorie d'impact."
+Cliquez sur une catégorie pour zoomer dessus !"
     >
       <ImpactCategoryDropDown
         data={impactsLongMerged}

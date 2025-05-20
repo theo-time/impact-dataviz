@@ -22,7 +22,10 @@ export default function GreatestImpacts() {
   const dataByCategory = useMemo(() => {
     return categories.map(category => {
       const filtered = impactsLongMerged
-        .filter(item => item.category_name?.trim() === category && item.valeur > 0);
+        .filter(item => item.category_name?.trim() === category && item.valeur > 0 && item['Type de dataset'] == 'LCI result'
+          && item['Unité'] == 'kg'
+          && item["categorie_niv_1"] != 'Traitement de fin de vie'
+        )
 
       const top = filtered
         .sort((a, b) => b.valeur - a.valeur)
@@ -35,7 +38,8 @@ export default function GreatestImpacts() {
   return (
     <DashboardPage
       title="Top 10 des procédés les plus impactants"
-      subtitle="Par catégorie d’impact"
+      subtitle="En un coup d'œil, découvrez les produits ayant le plus d'impact sur l'environnement au kg.
+On considère ici uniquement les produits dont l'unité est en kg, qui ne sont pas des déchets, et dont l'impact est déjà calculé sur la totalité de la vie du produit (LCI result)."
     >
       {dataByCategory.map(({ category, data }) => (
         <div key={category} className='greatest-impact-container'>

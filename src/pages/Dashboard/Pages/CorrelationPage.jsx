@@ -11,7 +11,7 @@ export default function CorrelationPage() {
   const [selectedImpactCategory, setSelectedImpactCategory] = React.useState('Acidification');
 
   const impactsFiltered = impactsLongMerged.filter((item, index) => item.valeur > 0 && item.category_name == selectedImpactCategory
-    // && item.categorie_niv_1 != 'Composant electrique et electronique'
+
   )
 
   return (
@@ -19,7 +19,7 @@ export default function CorrelationPage() {
       title="Corrélations entre catégories d’impact"
       subtitle="Explorez les relations entre indicateurs environnementaux ! 
 Cette carte de chaleur (heatmap) montre les corrélations linéaires entre les différentes catégories d’impact environnemental.
-Une corrélation mesure à quel point deux variables évoluent ensemble : une valeur proche de +1 signifie qu'elles augmentent ou diminuent de concert, une valeur proche de -1 indique un comportement opposé."
+Une corrélation mesure à quel point deux variables évoluent ensemble : une valeur proche de 1 que les deux valeurs sont liées."
     >
       <CorrelationHeatmap data={impactCorrelations} />
     </DashboardPage >
