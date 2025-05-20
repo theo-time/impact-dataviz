@@ -4,11 +4,11 @@ import './LeftPanel.scss';
 
 export default function DashboardNavigation() {
   const links = [
-    { label: 'Distribution', path: '/dashboard/distribution' },
-    { label: 'Sunburst', path: '/dashboard/sunburst' },
-    { label: 'Correlation', path: '/dashboard/correlation' },
     { label: 'Procédés les plus impactants', path: '/dashboard/greatest-impacts' },
     { label: 'Classements Pays', path: '/dashboard/geography' },
+    { label: 'Correlation', path: '/dashboard/correlation' },
+    { label: 'Distribution', path: '/dashboard/distribution' },
+    { label: 'Sunburst', path: '/dashboard/sunburst' },
   ];
 
   return (

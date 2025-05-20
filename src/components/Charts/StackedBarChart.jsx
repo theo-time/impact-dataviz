@@ -63,7 +63,7 @@ export default function StackedBarChart({ data, xScale }) {
         type: 'bar',
         name: category,
         x: values,
-        y: sortedFlux.map(name => getShortLabel(name)),
+        y: sortedFlux.map(name => name),
         orientation: 'h',
         hoverinfo: 'x+y+name',
         marker: {
