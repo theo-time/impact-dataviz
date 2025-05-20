@@ -9,7 +9,6 @@ export default function CountryRanking({ data, datasetName, label }) {
   const [category, setCategory] = useState('Changement climatique');
   const [filteredData, setFilteredData] = useState([]);
 
-  console.log('CountryRanking', datasetName, data);
 
   const categories = useMemo(() => {
     const set = new Set();
@@ -25,7 +24,7 @@ export default function CountryRanking({ data, datasetName, label }) {
   useEffect(() => {
     const filtered = data.filter(item => item.category_name?.trim() === category && item.valeur > 0);
     const maxValue = Math.max(...filtered.map(item => item.valeur));
-    console.log(maxValue);
+
     const final_filtered = filtered
       .map(item => ({
         country: item["Zone géographique"],

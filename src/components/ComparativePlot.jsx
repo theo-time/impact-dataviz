@@ -55,7 +55,6 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
   const filtered = useMemo(() => {
     if (!category) return [];
     const { path, level } = selectedNode;
-    console.log('data', data)
     return data.filter(row =>
       (
         level === -1 ||
@@ -75,7 +74,6 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
   }, [data, selectedNode, category, positiveMode]);
 
   const filteredFinal = useMemo(() => {
-    console.log('filtered', filtered);
     // Si on n'est pas en mode "groupé", on retourne les données filtrées
     if (!groupedMode) return filtered;
 
@@ -85,8 +83,6 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     // Niveau à grouper (ex : si on est à niv_2, on groupe par niv_3)
     const groupKey1 = `Categorie_niv_${selectedNode.level + 2}`;
     const groupKey2 = `category_name`;
-    console.log('selectedNode', selectedNode);
-
     // Grouper les éléments par sous-catégorie
     const grouped = {};
 
@@ -122,7 +118,6 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
       "Unité": impact_unit,
       "category_name": category
     }));
-    console.log('final', final);
     return final;
   }, [filtered, groupedMode, selectedNode, category]);
 
