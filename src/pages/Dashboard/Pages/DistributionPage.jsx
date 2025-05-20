@@ -19,13 +19,13 @@ export default function DistributionPage() {
   return (
     <DashboardPage
       title="Distribution des procédés par impact"
-      subtitle="Chaque graphique représente une catégorie d’impact (comme le changement climatique ou l’acidification).
-      Les points montrent les procédés, la boîte résume leur distribution: médiane, écart, valeurs extrêmes.
-      En un coup d’ œil, identifiez les procédés les plus impactants."
+      subtitle="Ces graphiques présentent la distribution des procédés pour chaque impact environnemental du dataset.
+Les points correspondent aux procédés, et la boîte résume leur distribution: médiane, écart, valeurs extrêmes.
+En un coup d’ œil, identifiez les procédés les plus impactants."
     >
-      <button onClick={() => setUseLogScale(!useLogScale)} style={{ marginBottom: '10px' }}>
+      {/* <button onClick={() => setUseLogScale(!useLogScale)} style={{ marginBottom: '10px' }}>
         Échelle : {useLogScale ? 'Logarithmique' : 'Linéaire'}
-      </button>
+      </button> */}
 
       <div className="grid-boxplots">
         {categoryImpacts.map((cat, index) => {

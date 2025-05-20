@@ -3,6 +3,21 @@ import { Typography } from '@mui/material';
 import Plot from 'react-plotly.js';
 import impactColors from '../../configs/colorCode.js';
 
+
+// Returns first 100 characters of the label and ellipsis if longer
+function getShortLabel(procede, maxLength = 100) {
+  var nomprocede = procede["Nom du flux"]?.trim() ?? '';
+
+  // nomprocede = removeProductionSuffix(nomprocede);
+
+  if (nomprocede.length > maxLength) {
+    nomprocede = nomprocede.substring(0, maxLength) + '...';
+  }
+
+  return nomprocede;
+}
+
+
 export default function StackedBarChart({ data, xScale }) {
   const groupedData = useMemo(() => {
     // Étape 1 : regrouper les données par flux
@@ -48,7 +63,7 @@ export default function StackedBarChart({ data, xScale }) {
         type: 'bar',
         name: category,
         x: values,
-        y: sortedFlux.map(name => wrapLabel(name)),
+        y: sortedFlux.map(name => getShortLabel(name)),
         orientation: 'h',
         hoverinfo: 'x+y+name',
         marker: {

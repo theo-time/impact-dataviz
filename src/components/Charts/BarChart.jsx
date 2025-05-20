@@ -19,27 +19,22 @@ function removeProductionSuffix(input) {
   return input;
 }
 
-function getShortLabel(procede, maxLength = 300) {
+// Returns first 100 characters of the label and ellipsis if longer
+function getShortLabel(procede, maxLength = 100) {
   var nomprocede = procede["Nom du flux"]?.trim() ?? '';
 
-  if (!nomprocede) return '';
-  // Remove any leading or trailing whitespace
-  nomprocede = nomprocede.trim();
-  // If the label is empty after trimming, return an empty string
-  if (nomprocede.length === 0) return '';
+  nomprocede = removeProductionSuffix(nomprocede);
 
-  // If procede contains "production industrielle etc.." remove it
-  if (nomprocede.includes("production industrielle")) {
-    return removeProductionSuffix(nomprocede);
+  if (nomprocede.length > maxLength) {
+    nomprocede = nomprocede.substring(0, maxLength) + '...';
   }
 
-  // Otherwise, return the  last part with ellipsis
   return nomprocede;
 }
 
-export default function BarChart({ data, xScale, dispModeBar = true, legendSizePercent = 0.2 }) {
+export default function BarChart({ data, xScale, dispModeBar = true, legendSizePercent = 0.15 }) {
 
-  function wrapLabel(label, maxLength = 30) {
+  function wrapLabel(label, maxLength = 80) {
     if (!label) return '';
     const words = label.split(/\s+/);
     let lines = [];
@@ -56,8 +51,9 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
     }
 
     lines.push(currentLine.trim());
-    return lines.join('\n');
+    return lines.join('<br>'); // ← important : <br> et pas \n
   }
+
 
   const sortedData = useMemo(() => {
     return [...data].sort((a, b) => a.valeur - b.valeur); // tri croissant
@@ -67,7 +63,7 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
   const referenceUnit = sortedData[0]?.["Unité de référence"]?.trim() ?? '';
 
 
-  const labels = sortedData.map(d => getShortLabel(d));
+  const labels = sortedData.map(d => wrapLabel(getShortLabel(d)));
   const values = sortedData.map(d => d.valeur);
   const tooltips = sortedData.map(d => {
     const nom = d["Nom du flux"]?.trim() ?? '';
@@ -100,7 +96,7 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
           {
             type: 'bar',
             x: values,
-            y: labels,
+            y: sortedData.map((_, i) => i), // index numérique pour chaque barre
             text: tooltips,
             hoverinfo: 'text',
             hovertemplate: '%{text}<extra></extra>',
@@ -123,9 +119,10 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
           },
           yaxis: {
             tickfont: { size: 12 },
+            tickvals: sortedData.map((_, i) => i),
+            ticktext: labels,
             domain: [0, 1],
-            margin: { t: 0, b: 0, r: 100 },
-            automargin: false
+            automargin: true
           },
           height: sortedData.length * 40 + 100,
           showlegend: false,
