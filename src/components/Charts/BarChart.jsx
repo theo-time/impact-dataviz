@@ -80,7 +80,7 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
     <span style="font-size: 13px; color: black;">
       ${nom}<br />
       <span style="color:#007acc; font-size: 16px; font-weight: bold;">
-        ${valeur} ${uniteRef} par ${qte} ${unite}
+        ${valeur} ${uniteRef} par ${unite}
       </span>
     </span>
   `;
@@ -113,7 +113,7 @@ export default function BarChart({ data, xScale, dispModeBar = true, legendSizeP
           }
         ]}
         layout={{
-          margin: { l: 300, r: 40, t: 40, b: 0 },
+          margin: { l: 300, r: 40, t: 40, b: 40 },
           xaxis: {
             title: 'Valeur (échelle logarithmique)',
             type: xScale,

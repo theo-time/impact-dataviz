@@ -37,6 +37,13 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
     setXScale(prev => (prev === 'log' ? 'linear' : 'log'));
   };
 
+  const handleChartTypeChange = (event, newValue) => {
+    setChartType(newValue);
+    if (newValue !== 'bar') {
+      setXScale('linear');
+    }
+  };
+
   const categoryOptions = useMemo(() => {
     const set = new Set();
     data.forEach(d => {
@@ -90,7 +97,12 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
       if (!key) return;
 
       if (!grouped[key]) {
-        grouped[key] = { total: 0, total_norm: 0, count: 0, unit: row["Unité de référence"], category: row.category_name };
+        grouped[key] = { total: 0, total_norm: 0, count: 0, unit: row["Unité de référence"], impact_unit: row['Unité'], category: row.category_name };
+      }
+
+      // Si l'unité  est différente, on set l'unité de référence à ""
+      if (grouped[key].impact_unit !== row["Unité"]) {
+        grouped[key].impact_unit = "procédé";
       }
 
       grouped[key].total += row.valeur;
@@ -101,13 +113,13 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
 
 
     // Construire les objets formatés comme des "faux procédés"
-    const final = Object.entries(grouped).map(([key, { total, count, unit, category }]) => ({
+    const final = Object.entries(grouped).map(([key, { total, count, unit, category, impact_unit }]) => ({
       "Nom du flux": key.split(' - ')[0],
       "valeur": total / count,
       "valeur_norm_q3": total / count,
       "Unité de référence": unit,
       "Quantité de référence": "1", // valeur neutre
-      "Unité": "", // facultatif
+      "Unité": impact_unit,
       "category_name": category
     }));
     console.log('final', final);
@@ -122,7 +134,7 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
 
       <Tabs
         value={chartType}
-        onChange={(e, val) => setChartType(val)}
+        onChange={(e, val) => handleChartTypeChange(e, val)}
         sx={{ mb: 2 }}
       >
         <Tab label="Impact unique" value="bar" />
@@ -146,7 +158,7 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
                 onChange={e => setCategory(e.target.value)}
                 size="medium"
                 sx={{ width: 400 }}
-                disabled={chartType !== 'bar'} // ← Activation conditionnelle
+                disabled={chartType !== 'bar'}
               >
                 {categoryOptions.map(opt => (
                   <MenuItem key={opt} value={opt}>
@@ -168,7 +180,7 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
                   size="small"
                 />
               }
-              label={<Typography variant="body2">Détail Procédés</Typography>} // ← Police plus petite
+              label={<Typography variant="body2">Détail Procédés</Typography>}
             />
 
             <FormControlLabel
@@ -177,6 +189,7 @@ export default function ComparativePlot({ data, selectedNode, setSelectedNode })
                   checked={xScale === 'log'}
                   onChange={toggleScale}
                   size="small"
+                  disabled={chartType !== 'bar'}
                 />
               }
               label={<Typography variant="body2">Échelle logarithmique</Typography>}
