@@ -24,7 +24,7 @@ function App() {
         <Route path='/metadata' element={<Metadata />} />
         <Route path='/metadata-procede' element={<MetadataProcedes />} />
         <Route path="/dashboard" element={<Dashboard />}>
-          <Route index element={<Navigate to="distribution" />} />
+          <Route index element={<Navigate to="greatest-impacts" />} />
           <Route path="distribution" element={<DistributionPage />} />
           <Route path="sunburst" element={<SunburstPage />} />
           <Route path="correlation" element={<CorrelationPage />} />
